@@ -1,0 +1,15 @@
+{
+  "name": "split-ledger",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Shared expenses for groups: split bills, track balances and settle up in as few transfers as possible.",
+  "license": "MIT",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "engines": {
+    "node": ">=22"
+  }
+}
