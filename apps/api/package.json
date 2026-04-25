@@ -1,0 +1,29 @@
+{
+  "name": "@split-ledger/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Fastify JSON API for Split Ledger.",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "start": "tsx src/server.ts",
+    "build": "node scripts/build.mjs",
+    "typecheck": "tsc --noEmit",
+    "db:generate": "drizzle-kit generate"
+  },
+  "dependencies": {
+    "@electric-sql/pglite": "^0.3.16",
+    "@fastify/cookie": "^11.1.3",
+    "@fastify/rate-limit": "^11.2.1",
+    "@fastify/static": "^10.1.5",
+    "@split-ledger/shared": "0.1.0",
+    "drizzle-orm": "^0.45.4",
+    "fastify": "^5.12.7",
+    "postgres": "^3.4.9"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.31.11",
+    "esbuild": "^0.28.2",
+    "tsx": "^4.23.15"
+  }
+}
