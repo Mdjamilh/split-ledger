@@ -76,7 +76,7 @@ export async function buildApp(options: AppOptions): Promise<FastifyInstance> {
           } catch {
             host = undefined;
           }
-          if (host !== request.headers.host) throw new HttpError(403, "Cross-origin request refused.");
+          if (host !== request.host) throw new HttpError(403, "Cross-origin request refused.");
         }
         request.userId = await ctx.sessions.resolve(request.cookies[ctx.cookie.name]);
       });
