@@ -152,7 +152,7 @@ describe("activity and export", () => {
     expect(kinds).toContain("member.joined");
     expect(kinds).toContain("expense.deleted");
     expect(kinds[0]).toBe("settlement.recorded");
-    expect(log.find((a: { kind: string }) => a.kind === "expense.added" && a.summary.includes("Hotel"))).toMatchObject({
+    expect(log.find((a: { kind: string; summary: string }) => a.kind === "expense.added" && a.summary.includes("Hotel"))).toMatchObject({
       actorName: "Ana",
       summary: 'added "Hotel" (€100.00)',
     });
