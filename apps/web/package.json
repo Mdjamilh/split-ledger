@@ -1,0 +1,31 @@
+{
+  "name": "@split-ledger/web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "React single-page app for Split Ledger.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@split-ledger/shared": "0.1.0",
+    "@tanstack/react-query": "^5.104.1",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-router": "^7.18.4"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.7",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "@vitejs/plugin-react": "^5.2.0",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "jsdom": "^30.1.2",
+    "vite": "8.3.4"
+  }
+}
