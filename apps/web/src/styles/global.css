@@ -1,0 +1,80 @@
+:root {
+  --bg: #f6f5f1;
+  --surface: #ffffff;
+  --surface-muted: #f1efe9;
+  --ink: #1b2228;
+  --ink-soft: #4a545e;
+  --ink-faint: #6b7580;
+  --line: #e3e0d8;
+  --accent: #0f766e;
+  --accent-strong: #0b5e58;
+  --accent-soft: #e3f3f0;
+  --owed: #15803d;
+  --owed-soft: #e6f4ea;
+  --owe: #b4441b;
+  --owe-soft: #fbeae3;
+  --warn-bg: #fff6db;
+  --warn-ink: #6b4d00;
+  --radius: 14px;
+  --radius-sm: 9px;
+  --shadow: 0 1px 2px rgb(27 34 40 / 6%), 0 4px 16px rgb(27 34 40 / 5%);
+  --font: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.2;
+  margin: 0;
+  letter-spacing: -0.015em;
+}
+
+a {
+  color: var(--accent);
+}
+
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+}
