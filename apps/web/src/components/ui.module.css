@@ -1,0 +1,160 @@
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 40px;
+  padding: 0 1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  font-weight: 650;
+  font-size: 0.92rem;
+  text-decoration: none;
+  color: var(--ink);
+  cursor: pointer;
+  transition:
+    background 120ms ease,
+    border-color 120ms ease;
+}
+
+.button:hover {
+  background: var(--surface-muted);
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.primary {
+  composes: button;
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.primary:hover {
+  background: var(--accent-strong);
+}
+
+.ghost {
+  composes: button;
+  background: transparent;
+  border-color: transparent;
+  color: var(--ink-soft);
+}
+
+.ghost:hover {
+  background: var(--surface-muted);
+}
+
+.small {
+  min-height: 32px;
+  padding: 0 0.7rem;
+  font-size: 0.85rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.label {
+  font-size: 0.85rem;
+  font-weight: 650;
+  color: var(--ink-soft);
+}
+
+.input {
+  width: 100%;
+  min-height: 42px;
+  padding: 0 0.8rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid #cfcbc1;
+  background: var(--surface);
+}
+
+.input:focus {
+  border-color: var(--accent);
+}
+
+.input[aria-invalid="true"] {
+  border-color: var(--owe);
+}
+
+.error {
+  color: var(--owe);
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.alert {
+  padding: 0.7rem 0.9rem;
+  border-radius: var(--radius-sm);
+  background: var(--owe-soft);
+  color: #7c2d12;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.muted {
+  color: var(--ink-faint);
+}
+
+.segmented {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 11px;
+  background: var(--surface-muted);
+  border: 1px solid var(--line);
+}
+
+.segment {
+  border: 0;
+  background: transparent;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  font-weight: 650;
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+
+.segment[aria-pressed="true"],
+.segment[aria-selected="true"] {
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 8%);
+}
+
+.owed {
+  color: var(--owed);
+}
+
+.owe {
+  color: var(--owe);
+}
+
+.avatar {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #fff;
+  border: 2px solid var(--surface);
+}
