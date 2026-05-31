@@ -1,0 +1,114 @@
+.page {
+  display: grid;
+  gap: 1.75rem;
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.head h1 {
+  font-size: 1.85rem;
+  font-weight: 800;
+}
+
+.overall {
+  margin: 0.4rem 0 0;
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+
+.grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 1rem;
+}
+
+.groupCard {
+  display: grid;
+  gap: 0.4rem;
+  padding: 1.25rem 1.3rem;
+  text-decoration: none;
+  color: inherit;
+  height: 100%;
+  transition:
+    transform 120ms ease,
+    border-color 120ms ease;
+}
+
+.groupCard:hover {
+  border-color: #c9c4b8;
+  transform: translateY(-1px);
+}
+
+.groupCard p {
+  margin: 0;
+  font-size: 0.88rem;
+}
+
+.cardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cardTop h2 {
+  font-size: 1.12rem;
+}
+
+.currency {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  padding: 0.15rem 0.5rem;
+  border-radius: 99px;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
+.standings {
+  margin-top: 0.6rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed var(--line);
+  font-weight: 700;
+  font-size: 0.95rem;
+  display: grid;
+  gap: 0.15rem;
+}
+
+.newGroup {
+  display: grid;
+  grid-template-columns: 2fr 1fr auto;
+  align-items: end;
+  gap: 0.8rem;
+  padding: 1rem;
+  width: min(640px, 100%);
+}
+
+.formActions {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.empty {
+  padding: 2rem;
+  text-align: center;
+}
+
+.empty p {
+  margin: 0.4rem 0 0;
+}
+
+@media (max-width: 640px) {
+  .newGroup {
+    grid-template-columns: 1fr;
+  }
+}
