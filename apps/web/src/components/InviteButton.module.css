@@ -1,0 +1,28 @@
+.wrap {
+  position: relative;
+}
+
+.popover {
+  position: absolute;
+  z-index: 10;
+  right: 0;
+  top: calc(100% + 8px);
+  width: min(440px, calc(100vw - 2rem));
+  padding: 1rem;
+  display: grid;
+  gap: 0.6rem;
+  justify-items: start;
+}
+
+.row {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  .popover {
+    left: 0;
+    right: auto;
+  }
+}

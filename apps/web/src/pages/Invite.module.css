@@ -1,0 +1,31 @@
+.card {
+  max-width: 520px;
+  margin: 3rem auto 0;
+  padding: 2rem;
+  display: grid;
+  gap: 0.75rem;
+  justify-items: start;
+}
+
+.card h1 {
+  font-size: 1.7rem;
+  font-weight: 800;
+}
+
+.card p {
+  margin: 0;
+}
+
+.eyebrow {
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
