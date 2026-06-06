@@ -1,5 +1,5 @@
 import { existsSync } from "node:fs";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 
 import cookie from "@fastify/cookie";
 import rateLimit from "@fastify/rate-limit";
@@ -93,14 +93,16 @@ export async function buildApp(options: AppOptions): Promise<FastifyInstance> {
     { prefix: "/api" },
   );
 
-  const webRoot = options.webRoot;
+  const webRoot = options.webRoot === undefined ? undefined : resolve(options.webRoot);
   const serveWeb = webRoot !== undefined && existsSync(join(webRoot, "index.html"));
   if (serveWeb) await app.register(fastifyStatic, { root: webRoot, wildcard: false });
 
   app.setNotFoundHandler((request, reply) => {
-    // Client-side routes (/groups/..., /invite/...) all load the single-page app.
-    if (serveWeb && request.method === "GET" && !request.url.startsWith("/api/")) {
-      return reply.type("text/html").sendFile("index.html");
+    // Client-side routes (/groups/..., /invite/...) all load the single-page app,
+    // but a missing file such as an old /assets/*.js bundle stays a 404.
+    const path = request.url.split("?")[0] ?? "";
+    if (serveWeb && request.method === "GET" && !path.startsWith("/api/") && !/\.[a-z0-9]+$/i.test(path)) {
+      return reply.type("text/html").header("cache-control", "no-cache").sendFile("index.html");
     }
     return reply.status(404).send({ error: "Not found" });
   });
