@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { draftEntries, draftFromExpense, formatPercent, parsePercent, previewSplit, type SplitDraft } from "../src/splitForm";
+import { draftEntries, draftFromExpense, formatPercent, parsePercent, previewSplit, switchMethod, type SplitDraft } from "../src/splitForm";
 
 const ids = ["a", "b", "c"];
 const draft = (method: SplitDraft["method"], values: Record<string, string> = {}, included: Record<string, boolean> = {}): SplitDraft => ({
@@ -90,5 +90,23 @@ describe("draftFromExpense", () => {
       ids,
     );
     expect(restored).toEqual({ method: "percentage", included: { a: true, b: true, c: false }, values: { a: "33.33", b: "66.67" } });
+  });
+});
+
+describe("switchMethod", () => {
+  const equal = draft("equal", {}, { a: true, b: true, c: true });
+
+  it("gives everyone involved one share", () => {
+    expect(switchMethod(equal, "shares", ids).values).toEqual({ a: "1", b: "1", c: "1" });
+  });
+
+  it("pre-fills percentages that add up to exactly 100", () => {
+    const next = switchMethod(equal, "percentage", ids);
+    expect(next.values).toEqual({ a: "33.34", b: "33.33", c: "33.33" });
+    expect(previewSplit(1000, next, ids, "USD").kind).toBe("ok");
+  });
+
+  it("only includes people who were ticked", () => {
+    expect(switchMethod(draft("equal", {}, { b: true }), "shares", ids).values).toEqual({ b: "1" });
   });
 });

@@ -3,7 +3,7 @@ import { SPLIT_METHODS, type Currency, type Member, type SplitMethod } from "@sp
 import { Avatar, Money } from "./bits";
 import styles from "./SplitEditor.module.css";
 import ui from "./ui.module.css";
-import { draftEntries, previewSplit, type SplitDraft } from "../splitForm";
+import { draftEntries, previewSplit, switchMethod, type SplitDraft } from "../splitForm";
 
 const LABELS: Record<SplitMethod, string> = { equal: "Equally", exact: "Exact amounts", percentage: "Percentages", shares: "Shares" };
 const HINTS: Record<SplitMethod, string> = {
@@ -33,7 +33,7 @@ export function SplitEditor({ members, amount, currency, draft, onChange, meId }
       <legend className={ui.label}>Split</legend>
       <div className={ui.segmented} role="group" aria-label="Split method">
         {SPLIT_METHODS.map((m) => (
-          <button key={m} type="button" className={ui.segment} aria-pressed={draft.method === m} onClick={() => onChange({ ...draft, method: m })}>
+          <button key={m} type="button" className={ui.segment} aria-pressed={draft.method === m} onClick={() => m !== draft.method && onChange(switchMethod(draft, m, ids))}>
             {LABELS[m]}
           </button>
         ))}

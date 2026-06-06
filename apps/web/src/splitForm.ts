@@ -1,4 +1,5 @@
 import {
+  allocate,
   computeShares,
   FULL_PERCENT_BP,
   parseAmount,
@@ -115,4 +116,20 @@ export function draftFromExpense(expense: Expense, memberIds: string[]): SplitDr
           : String(share.value);
   }
   return { method: expense.method, included, values };
+}
+
+/**
+ * Switching method keeps who is involved and pre-fills sensible values:
+ * one share each, or an even percentage split that adds up to exactly 100.
+ */
+export function switchMethod(draft: SplitDraft, method: SplitMethod, memberIds: string[]): SplitDraft {
+  const involved = memberIds.filter((id) => draft.included[id]);
+  const people = involved.length > 0 ? involved : memberIds;
+  if (method === "shares") return { ...draft, method, values: Object.fromEntries(people.map((id) => [id, "1"])) };
+  if (method === "percentage") {
+    const bp = allocate(FULL_PERCENT_BP, people.map(() => 1));
+    return { ...draft, method, values: Object.fromEntries(people.map((id, i) => [id, formatPercent(bp[i]!)])) };
+  }
+  if (method === "exact") return { ...draft, method, values: {} };
+  return { ...draft, method };
 }
