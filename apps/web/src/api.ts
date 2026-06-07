@@ -52,7 +52,7 @@ export const api = {
   login: (input: LoginInput) => request<User>("POST", "/auth/login", input),
   register: (input: RegisterInput) => request<User>("POST", "/auth/register", input),
   demo: () => request<User>("POST", "/auth/demo", {}),
-  logout: () => request<void>("POST", "/auth/logout", {}),
+  logout: () => request<undefined>("POST", "/auth/logout", {}),
 
   groups: () => request<GroupSummary[]>("GET", "/groups"),
   createGroup: (input: CreateGroupInput) => request<{ id: string }>("POST", "/groups", input),
@@ -62,7 +62,7 @@ export const api = {
   addExpense: (groupId: string, input: ExpenseInput) => request<{ id: string }>("POST", `/groups/${enc(groupId)}/expenses`, input),
   updateExpense: (groupId: string, id: string, input: ExpenseInput) =>
     request<{ id: string }>("PUT", `/groups/${enc(groupId)}/expenses/${enc(id)}`, input),
-  deleteExpense: (groupId: string, id: string) => request<void>("DELETE", `/groups/${enc(groupId)}/expenses/${enc(id)}`),
+  deleteExpense: (groupId: string, id: string) => request<undefined>("DELETE", `/groups/${enc(groupId)}/expenses/${enc(id)}`),
 
   balances: (groupId: string) => request<BalancesResponse>("GET", `/groups/${enc(groupId)}/balances`),
   recordSettlement: (groupId: string, input: SettlementInput) =>
