@@ -12,6 +12,19 @@
   "engines": {
     "node": ">=22"
   },
+  "scripts": {
+    "dev": "npm run dev --workspace @split-ledger/api & npm run dev --workspace @split-ledger/web",
+    "dev:api": "npm run dev --workspace @split-ledger/api",
+    "dev:web": "npm run dev --workspace @split-ledger/web",
+    "build": "npm run build --workspace @split-ledger/web && npm run build --workspace @split-ledger/api",
+    "start": "node apps/api/dist/server.mjs",
+    "lint": "eslint .",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "build:vercel": "node scripts/build-vercel.mjs"
+  },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.2",
     "@eslint/js": "^9.36.0",
