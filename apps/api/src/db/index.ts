@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 import { PGlite } from "@electric-sql/pglite";
@@ -22,7 +23,9 @@ export interface Database {
   close(): Promise<void>;
 }
 
-const sourceMigrations = fileURLToPath(new URL("../../drizzle", import.meta.url));
+/** Next to the bundle in builds (see scripts/bundle-api.mjs), otherwise apps/api/drizzle. */
+const bundledMigrations = fileURLToPath(new URL("./drizzle", import.meta.url));
+const sourceMigrations = existsSync(bundledMigrations) ? bundledMigrations : fileURLToPath(new URL("../../drizzle", import.meta.url));
 
 export interface CreateDbOptions {
   url?: string | undefined;
