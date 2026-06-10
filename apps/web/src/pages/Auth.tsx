@@ -46,7 +46,9 @@ function TryDemo() {
 
 function AuthShell({ title, children, footer }: { title: string; children: React.ReactNode; footer: React.ReactNode }) {
   const { data: me } = useMe();
-  if (me) return <Navigate to="/" replace />;
+  const [params] = useSearchParams();
+  // Already signed in (or just signed in): go where the visitor was heading.
+  if (me) return <Navigate to={safeNext(params.get("next"))} replace />;
   return (
     <div className={styles.page}>
       <DemoBanner />
