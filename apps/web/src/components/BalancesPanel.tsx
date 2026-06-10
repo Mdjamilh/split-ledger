@@ -31,7 +31,7 @@ export function BalancesPanel({ group, meId }: { group: GroupDetail; meId: strin
       <div className={styles.titleRow}>
         <h2 id="balances-title">Balances</h2>
         {ledgers.length > 1 && (
-          <div className={ui.segmented} aria-label="Currency">
+          <div className={ui.segmented} role="group" aria-label="Currency">
             {ledgers.map((l) => (
               <button key={l.currency} type="button" className={ui.segment} aria-pressed={l.currency === currency} onClick={() => setPicked(l.currency)}>
                 {l.currency}
