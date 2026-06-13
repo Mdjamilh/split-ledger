@@ -18,6 +18,7 @@ export interface BootOptions {
  * - SESSION_SECRET: HMAC key for demo sessions (required in production demo
  *   mode so every serverless instance accepts the same cookies).
  * - DEMO_MODE=1 / 0: force demo mode on or off.
+ * - SECURE_COOKIES=1 / 0: mark the session cookie Secure (default: in production).
  */
 export async function boot(options: BootOptions = {}): Promise<FastifyInstance> {
   const production = process.env.NODE_ENV === "production";
@@ -36,7 +37,7 @@ export async function boot(options: BootOptions = {}): Promise<FastifyInstance> 
     database,
     demo,
     sessionSecret,
-    secureCookies: production,
+    secureCookies: process.env.SECURE_COOKIES ? process.env.SECURE_COOKIES === "1" : production,
     webRoot: options.webRoot,
     logger: process.env.LOG_REQUESTS === "1",
   });
