@@ -1,0 +1,113 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Lint, typecheck, unit tests (PGlite), build, audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - name: Unit and API integration tests on in-memory PGlite
+        run: npm test
+      - run: npm run build
+      - name: Vercel build output
+        run: npm run build:vercel
+      - name: Audit production dependencies
+        run: npm audit --omit=dev
+      - name: Audit all dependencies (high and above)
+        run: npm audit --audit-level=high
+
+  postgres:
+    name: API integration tests (Postgres 17)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: split_ledger
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: API tests, one throwaway database per test file
+        run: npx vitest run --project api
+        env:
+          TEST_DATABASE_URL: postgres://postgres:postgres@localhost:5432/split_ledger
+
+  e2e:
+    name: End-to-end (Playwright + axe)
+    runs-on: ubuntu-latest
+    needs: [quality, postgres]
+    timeout-minutes: 15
+    # Chromium and its system libraries preinstalled; keep the tag in sync
+    # with the exact @playwright/test version in package.json.
+    container:
+      image: mcr.microsoft.com/playwright:v1.55.1-noble
+    env:
+      HOME: /root
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: playwright-report
+          retention-days: 7
+
+  docker:
+    name: Docker image against Postgres
+    runs-on: ubuntu-latest
+    needs: quality
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - run: docker compose up -d --build --wait
+      - name: Smoke test
+        run: |
+          curl -fsS localhost:3000/api/health | grep '"persistent":true'
+          curl -fsS -c jar -H 'content-type: application/json' \
+            -d '{"email":"smoke@example.com","name":"Smoke","password":"password123"}' localhost:3000/api/auth/register
+          curl -fsS -b jar -H 'content-type: application/json' -d '{"name":"Smoke test","currency":"USD"}' localhost:3000/api/groups
+          curl -fsS -b jar localhost:3000/api/groups | grep '"Smoke test"'
+          curl -fsS localhost:3000/groups/anything | grep '<div id="root">'
+      - if: failure()
+        run: docker compose logs
