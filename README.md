@@ -2,7 +2,7 @@
 
 Split Ledger keeps track of shared expenses in a group: a trip, a shared flat, a regular dinner. Everyone adds what they paid, the app works out who owes whom, and when it is time to settle up it suggests the smallest number of payments that clears every debt.
 
-**Live demo: [split-ledger.vercel.app](https://split-ledger.vercel.app)**. Press "Try the demo" to sign in as Alex, who already has three groups of sample expenses. The demo keeps its data in memory and resets now and then, so feel free to experiment.
+**Live demo: [split-ledger-murex.vercel.app](https://split-ledger-murex.vercel.app)**. Press "Try the demo" to sign in as Alex, who already has three groups of sample expenses. The demo keeps its data in memory and resets now and then, so feel free to experiment.
 
 ![The Lisbon trip group: expenses on the left, balances and the settle-up plan on the right](docs/screenshot.png)
 
