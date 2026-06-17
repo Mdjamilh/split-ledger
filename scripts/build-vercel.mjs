@@ -31,8 +31,9 @@ await writeFile(
         { src: "^/api(/.*)?$", dest: "/api" },
         { src: "^/assets/(.*)$", headers: { "cache-control": "public, max-age=31536000, immutable" }, continue: true },
         { handle: "filesystem" },
-        // Every other path is a client-side route of the single-page app.
-        { src: "/(.*)", dest: "/index.html" },
+        // Every other path is a client-side route of the single-page app,
+        // except missing files (an old /assets bundle), which stay 404s.
+        { src: "^/(?!assets/)(?!.*[.][A-Za-z0-9]+$).*$", dest: "/index.html" },
       ],
     },
     null,
