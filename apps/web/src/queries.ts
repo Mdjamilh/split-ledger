@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { api, ApiError } from "./api";
+import { api, ApiError, setSerialRequests } from "./api";
 
 export const keys = {
   config: ["config"] as const,
@@ -12,7 +12,16 @@ export const keys = {
   activity: (id: string) => ["group", id, "activity"] as const,
 };
 
-export const useConfig = () => useQuery({ queryKey: keys.config, queryFn: api.config, staleTime: Infinity });
+export const useConfig = () =>
+  useQuery({
+    queryKey: keys.config,
+    queryFn: async () => {
+      const config = await api.config();
+      setSerialRequests(config.demo);
+      return config;
+    },
+    staleTime: Infinity,
+  });
 
 /** The signed-in user, or null when signed out (a 401 is an answer, not an error). */
 export const useMe = () =>

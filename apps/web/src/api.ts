@@ -31,7 +31,28 @@ export class ApiError extends Error {
   }
 }
 
-async function request<T>(method: string, path: string, body?: unknown): Promise<T> {
+/*
+ * The public demo keeps its data in the memory of a serverless instance.
+ * Sequential requests keep landing on the same warm instance, but a burst
+ * of parallel ones can make the platform start a second instance that has
+ * never seen this visitor's account. So until the server confirms it has a
+ * real database, requests go out one at a time.
+ */
+let serial = true;
+let queue: Promise<unknown> = Promise.resolve();
+
+export function setSerialRequests(value: boolean) {
+  serial = value;
+}
+
+function request<T>(method: string, path: string, body?: unknown): Promise<T> {
+  if (!serial) return send<T>(method, path, body);
+  const next = queue.then(() => send<T>(method, path, body));
+  queue = next.catch(() => undefined);
+  return next;
+}
+
+async function send<T>(method: string, path: string, body?: unknown): Promise<T> {
   const res = await fetch(`/api${path}`, {
     method,
     credentials: "same-origin",
