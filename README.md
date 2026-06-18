@@ -123,6 +123,9 @@ The live site runs on Vercel with no database, which is what puts it in demo mod
 - the Vite build is served as static files from the CDN, with every other path falling back to `index.html` for client-side routes;
 - the whole API is bundled by esbuild into **one** Node function that handles every `/api/*` route, together with the SQL migrations and PGlite's WebAssembly files. One function means one warm instance serves all API calls, so the in-memory demo stays consistent between requests;
 - `SESSION_SECRET` is set as an encrypted environment variable, so when Vercel does start a second instance, existing demo sessions still work there.
+- A burst of parallel requests can still make Vercel start a second instance, which has never seen an account registered on the first. While the server reports demo mode, the web client therefore sends API requests one at a time, which keeps a visitor on the same warm instance. With a real database this queue is switched off.
+
+The demo is honest about its limits: the sample account works on every instance, but anything you add lives only in the instance that served it and disappears when that instance is recycled.
 
 For a persistent deployment, set `DATABASE_URL` (for example a Neon or Supabase Postgres). Demo mode then switches off, sessions move to the database, and the "Try the demo" button disappears.
 
